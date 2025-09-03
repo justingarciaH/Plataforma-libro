@@ -21,7 +21,8 @@ describe('ReseñaComponente', () => {
   });
 
   it('muestra "No hay reseñas aún" cuando no hay reseñas', async () => {
-    (ResenasActions.getReseñasByLibro as any).mockResolvedValue([]);
+  (ResenasActions.getReseñasByLibro as jest.MockedFunction<typeof ResenasActions.getReseñasByLibro>)
+  .mockResolvedValue([]);
 
     render(await ReseñaComponente({ libroId }));
 
@@ -49,7 +50,7 @@ describe('ReseñaComponente', () => {
         dislikes: 1,
       },
     ];
-    (ResenasActions.getReseñasByLibro as any).mockResolvedValue(mockReseñas);
+    (ResenasActions.getReseñasByLibro as jest.MockedFunction<typeof ResenasActions.getReseñasByLibro>).mockResolvedValue(mockReseñas);
 
     render(await ReseñaComponente({ libroId }));
 
@@ -63,8 +64,11 @@ describe('ReseñaComponente', () => {
   });
 
   it('invoca agregarReseña al enviar el formulario', async () => {
-    (ResenasActions.getReseñasByLibro as any).mockResolvedValue([]);
-    (ResenasActions.agregarReseña as any).mockResolvedValue({ success: true });
+  (ResenasActions.getReseñasByLibro as jest.MockedFunction<typeof ResenasActions.getReseñasByLibro>)
+  .mockResolvedValue([]);
+
+  (ResenasActions.agregarReseña as jest.MockedFunction<typeof ResenasActions.agregarReseña>)
+  .mockResolvedValue({ success: true });
 
     render(await ReseñaComponente({ libroId }));
 
@@ -92,7 +96,7 @@ describe('ReseñaComponente', () => {
         dislikes: 0,
       },
     ];
-    (ResenasActions.getReseñasByLibro as any).mockResolvedValue(mockReseñas);
+    (ResenasActions.getReseñasByLibro as jest.MockedFunction<typeof ResenasActions.getReseñasByLibro>).mockResolvedValue(mockReseñas);
 
     render(await ReseñaComponente({ libroId }));
 

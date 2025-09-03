@@ -27,7 +27,7 @@ describe("fetchBooks", () => {
 
 
     it('deberia manejar errores de la API correctamente', async () => {
-        (axios.get as any).mockRejectedValue
+        (axios.get as jest.Mock).mockRejectedValue
         (new Error("API Error"));
 
         const books = await fetchBooks("test");

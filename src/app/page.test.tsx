@@ -3,10 +3,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Principal from './page';
 import * as ServerActions from '../actions/server-actions';
+import { Libro } from "./tipos/libro";
 
 // Mock del componente Carta
 vi.mock('../app/componentes/portada', () => ({
-  default: ({ libro }: any) => <div data-testid="carta">{libro.titulo}</div>,
+  default: ({ libro }: { libro: Libro}) => <div data-testid="carta">{libro.titulo}</div>,
 }));
 
 // Mock de la acción fetchBooks
@@ -20,7 +21,7 @@ describe('Página Principal', () => {
   });
 
   it('muestra el título principal', async () => {
-    (ServerActions.fetchBooks as any).mockResolvedValue([]);
+    (ServerActions.fetchBooks as unknown as jest.MockedFunction<typeof ServerActions.fetchBooks>).mockResolvedValue([]);
 
     render(await Principal({}));
 
@@ -30,10 +31,11 @@ describe('Página Principal', () => {
 
   it('muestra los libros recibidos de fetchBooks', async () => {
     const librosMock = [
-      { id: '1', titulo: 'Libro 1' },
-      { id: '2', titulo: 'Libro 2' },
+    { id: '1', titulo: 'Libro 1', autor: ['Autor 1'] },
+    { id: '1', titulo: 'Libro 1', autor: ['Autor 1'] },
     ];
-    (ServerActions.fetchBooks as any).mockResolvedValue(librosMock);
+  (ServerActions.fetchBooks as unknown as jest.MockedFunction<typeof ServerActions.fetchBooks>)
+  .mockResolvedValue(librosMock);
 
     render(await Principal({}));
 
@@ -44,7 +46,7 @@ describe('Página Principal', () => {
   });
 
   it('maneja array vacío de libros', async () => {
-    (ServerActions.fetchBooks as any).mockResolvedValue([]);
+    (ServerActions.fetchBooks  as unknown as jest.MockedFunction<typeof ServerActions.fetchBooks>).mockResolvedValue([]);
 
     render(await Principal({}));
 
@@ -52,8 +54,9 @@ describe('Página Principal', () => {
   });
 
   it('usa correctamente la query de searchParams', async () => {
-    const librosMock = [{ id: '3', titulo: 'Libro Buscado' }];
-    (ServerActions.fetchBooks as any).mockResolvedValue(librosMock);
+    const librosMock = [{ id: '3', titulo: 'Libro Buscado', autor: ['Autor X'] }];
+  (ServerActions.fetchBooks as unknown as jest.MockedFunction<typeof ServerActions.fetchBooks>)
+  .mockResolvedValue(librosMock);
 
     const searchParams = { q: 'Buscado' };
     render(await Principal({ searchParams }));

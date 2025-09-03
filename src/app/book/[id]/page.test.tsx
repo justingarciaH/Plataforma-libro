@@ -37,7 +37,7 @@ describe("BookPage", () => {
           },
         },
       }),
-    }) as any;
+    }) as unknown as typeof fetch;;
 
     // render del componente
     render(await BookPage({ params: { id: "123" } }));
@@ -58,7 +58,7 @@ describe("BookPage", () => {
 
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,
-    }) as any;
+    }) as unknown as typeof fetch;
 
     await BookPage({ params: { id: "fail" } });
 

@@ -21,10 +21,10 @@ describe("Resenas Actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Asegura valores por defecto para cada test
-    (fs.readFile as any).mockResolvedValue("[]");
-    (fs.writeFile as any).mockResolvedValue(undefined);
-    (fs.access as any).mockResolvedValue(undefined);
-    (fs.mkdir as any).mockResolvedValue(undefined);
+    (fs.readFile as jest.Mock).mockResolvedValue("[]");
+    (fs.writeFile as jest.Mock).mockResolvedValue(undefined);
+    (fs.access as jest.Mock).mockResolvedValue(undefined);
+    (fs.mkdir as jest.Mock).mockResolvedValue(undefined);
   });
 
   it("deberia poder agregar una nueva reseña a lo bien", async () => {
@@ -44,7 +44,7 @@ describe("Resenas Actions", () => {
     mockFormData.set("id", "1");
     mockFormData.set("tipo", "like");
 
-    (fs.readFile as any).mockResolvedValue(
+    (fs.readFile as jest.Mock).mockResolvedValue(
       JSON.stringify([
         {
           id: "1",

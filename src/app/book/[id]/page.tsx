@@ -1,17 +1,22 @@
 import { notFound } from "next/navigation";
 import ReseñaComponente from "../../componentes/reseña";
+import type { GoogleBooksItem } from "@/app/tipos/libro";
+import Image from "next/image";
 
-async function getBook(id: string) {
+// Función para obtener libro de Google Books
+async function getBook(id: string): Promise<GoogleBooksItem | null> {
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
   if (!res.ok) return null;
-  return res.json();
+  const data: GoogleBooksItem = await res.json();
+  return data;
 }
 
-export default async function BookPage(props: { params: { id: string } }) {
-  // await props.params antes de usarlo
-  const params = await props.params;
-  const id = params.id.toString();
-
+// Componente Page
+export default async function BookPage({ params, }: { params: { id: string};
+seachParams?: Record<string, string | string []>;
+}) {
+  
+  const id = params.id;
   const book = await getBook(id);
   if (!book) return notFound();
 
@@ -23,9 +28,9 @@ export default async function BookPage(props: { params: { id: string } }) {
       <p className="text-lg">{info.authors?.join(", ")}</p>
 
       {/* Portada grande */}
-      {info.imageLinks?.large || info.imageLinks?.thumbnail ? (
-        <img
-          src={info.imageLinks?.thumbnail}
+      {info.imageLinks?.thumbnail ? (
+        <Image
+          src={info.imageLinks.thumbnail}
           alt={info.title}
           className="w-auto h-auto max-w-[120px] max-h-[180px]"
         />
@@ -40,9 +45,18 @@ export default async function BookPage(props: { params: { id: string } }) {
 
       {/* Detalles */}
       <ul className="mt-4 text-sm text-white">
-        <li><span className="text-[#fcf7d3]">Fecha de publicación:</span> {info.publishedDate || "N/A"}</li>
-        <li><span className="text-[#fcf7d3]">Número de páginas:</span> {info.pageCount || "N/A"}</li>
-        <li><span className="text-[#fcf7d3]">Categorías:</span> {info.categories?.join(", ") || "N/A"}</li>
+        <li>
+          <span className="text-[#fcf7d3]">Fecha de publicación:</span>{" "}
+          {info.publishedDate || "N/A"}
+        </li>
+        <li>
+          <span className="text-[#fcf7d3]">Número de páginas:</span>{" "}
+          {info.pageCount || "N/A"}
+        </li>
+        <li>
+          <span className="text-[#fcf7d3]">Categorías:</span>{" "}
+          {info.categories?.join(", ") || "N/A"}
+        </li>
       </ul>
 
       {/* Reseñas propias */}

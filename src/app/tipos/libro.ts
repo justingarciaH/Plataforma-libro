@@ -20,3 +20,23 @@ export interface Reseña {
   likes: number 
   dislikes: number
 }
+
+export interface GoogleBooksItem {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors?: string[];
+    description?: string;
+    imageLinks?: {
+      smallThumbnail?: string;
+      thumbnail?: string;
+      medium?: string;
+      large?: string;
+      extraLarge?: string;
+    };
+    publishedDate?: string;
+    pageCount?: number;
+    categories?: string[];
+  };
+}
+
