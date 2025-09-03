@@ -12,8 +12,8 @@ async function getBook(id: string): Promise<GoogleBooksItem | null> {
 }
 
 // Componente Page
-export default async function BookPage({ params, }: { params: { id: string};
-seachParams?: Record<string, string | string []>;
+export default async function BookPage({ params, searchParams, }: { params: { id: string};
+searchParams?: Record<string, string | string []>;
 }) {
   
   const id = params.id;
