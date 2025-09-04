@@ -3,6 +3,13 @@ import ReseñaComponente from "../../componentes/reseña";
 import type { GoogleBooksItem } from "@/app/tipos/libro";
 import Image from "next/image";
 
+type BookPageProps = {
+  params: Promise <{
+    id: string;
+  }>;
+  // searchParams?: Record<string, string | string[]>;
+};
+
 // Función para obtener libro de Google Books
 async function getBook(id: string): Promise<GoogleBooksItem | null> {
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
@@ -12,11 +19,11 @@ async function getBook(id: string): Promise<GoogleBooksItem | null> {
 }
 
 // Componente Page
-export default async function BookPage({ params, searchParams, }: { params: { id: string};
-searchParams?: Record<string, string | string []>;
-}) {
-  
-  const id = params.id;
+export default async function BookPage({ params }: BookPageProps) {
+
+  const {
+    id
+  }= await params;
   const book = await getBook(id);
   if (!book) return notFound();
 

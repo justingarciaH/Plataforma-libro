@@ -6,10 +6,10 @@ export const metadata = {
   };
 
 
-export default async function Principal(props: { searchParams?: Record<string, string | string[]> }) {
+export default async function Principal(props: { searchParams?: Promise<string> }) {
 
-  const searchParams = await props.searchParams;
-  const query = (searchParams?.q ?? "").toString(); // ahora seguro
+  const searchParams = props.searchParams;
+  const query = (await searchParams ?? "").toString(); // ahora seguro
   const libros = await fetchBooks(query); // llamo a la accion del servidor para obtener los libros
 
   return (
