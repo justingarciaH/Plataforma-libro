@@ -12,6 +12,8 @@ const Carta = ({ libro }: { libro: Libro }) => {
         <Image
           src={libro.imagen || "/images/default-book.jpg"}
           alt={libro.titulo}
+          width={128}   // 32 * 4 (Tailwind usa rem)
+          height={192}
           className="w-32 h-48 object-cover mb-4 rounded-md"
         />
 

@@ -39,6 +39,8 @@ export default async function BookPage({ params }: BookPageProps) {
         <Image
           src={info.imageLinks.thumbnail}
           alt={info.title}
+             width={120}   // 32 * 4 (Tailwind usa rem)
+          height={180}
           className="w-auto h-auto max-w-[120px] max-h-[180px]"
         />
       ) : (

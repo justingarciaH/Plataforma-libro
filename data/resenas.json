@@ -124,5 +124,14 @@
     "valoracion": 5,
     "likes": 0,
     "dislikes": 0
+  },
+  {
+    "id": "1756950961114",
+    "idLibro": "CxZOEAAAQBAJ",
+    "usuario": "ffgffg",
+    "comentario": "fgf",
+    "valoracion": 1,
+    "likes": 0,
+    "dislikes": 0
   }
 ]
