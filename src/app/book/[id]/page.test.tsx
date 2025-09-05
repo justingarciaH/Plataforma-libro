@@ -40,7 +40,7 @@ describe("BookPage", () => {
     }) as unknown as typeof fetch;;
 
     // render del componente
-    render(await BookPage({ params: { id: "123" } }));
+    render(await BookPage({ params: Promise.resolve({ id: "123" }) }));
 
     expect(await screen.findByText("El Quijote")).toBeInTheDocument();
     expect(screen.getByText("Cervantes")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("BookPage", () => {
       ok: false,
     }) as unknown as typeof fetch;
 
-    await BookPage({ params: { id: "fail" } });
+    await BookPage({ params: Promise.resolve({ id: "fail" }) });
 
     expect(notFound).toHaveBeenCalled();
   });

@@ -6,11 +6,17 @@ export const metadata = {
   };
 
 
-export default async function Principal(props: { searchParams?: Promise<string> }) {
+export default async function Principal({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[]>>;
+}) {
+  const searchParam = await searchParams;
+  const queryParam = searchParam?.q;
+  // const queryParam = await searchParams?.q;
+  const query = Array.isArray(queryParam) ? queryParam[0] : queryParam || "";
 
-  const searchParams = props.searchParams;
-  const query = (await searchParams ?? "").toString(); // ahora seguro
-  const libros = await fetchBooks(query); // llamo a la accion del servidor para obtener los libros
+  const libros = query ? await fetchBooks(query) : [];
 
   return (
     <main className="min-h-screen bg-[#F5F5F5] flex flex-col items-center py-8">

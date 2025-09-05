@@ -25,7 +25,7 @@ describe("SearchPage", () => {
       { id: "1", titulo: "Libro Test", autor: ["Autor X"], imagen: "" },
     ]);
 
-    const ui = await SearchPage({ searchParams: { q: "test" } });
+    const ui = await SearchPage({ searchParams: Promise.resolve({ q: "test" }) });
     render(ui);
 
     expect(await screen.findByText(/Resultados para: test/i)).toBeInTheDocument();
@@ -37,17 +37,19 @@ describe("SearchPage", () => {
       { id: "2", titulo: "Otro Libro", autor: ["Autor Y"], imagen: "" },
     ]);
 
-    const ui = await SearchPage({ searchParams: { q: "harry" } });
+    const ui = await SearchPage({ searchParams: Promise.resolve({ q: "harry" }) });
     render(ui);
 
-    expect(await screen.findByText(/Libro Test/i)).toBeInTheDocument();
-    expect(await screen.findByText(/Otro Libro/i)).toBeInTheDocument();
+    const cartas = await screen.findAllByTestId("carta");
+    expect(cartas).toHaveLength(2);
+    expect(cartas[0]).toHaveTextContent("Libro Test");
+    expect(cartas[1]).toHaveTextContent("Otro Libro");
   });
 
   it("muestra mensaje cuando no hay resultados", async () => {
     (fetchBooks as vi.Mock).mockResolvedValue([]);
 
-    const ui = await SearchPage({ searchParams: { q: "nada" } });
+    const ui = await SearchPage({ searchParams: Promise.resolve({ q: "nada" }) });
     render(ui);
 
     expect(await screen.findByText(/No se encontraron libros/i)).toBeInTheDocument();
@@ -56,9 +58,12 @@ describe("SearchPage", () => {
   it("maneja caso sin query", async () => {
     (fetchBooks as vi.Mock).mockResolvedValue([]);
 
-    const ui = await SearchPage({});
+    const ui = await SearchPage({ searchParams: Promise.resolve({}) });
     render(ui);
 
-    expect(await screen.findByText(/Resultados para:/i)).toBeInTheDocument();
+    // Ahora el título esperado es "Ingresa una búsqueda"
+    expect(await screen.findByText(/Ingresa una búsqueda/i)).toBeInTheDocument();
+    // No debe renderizar cartas
+    expect(screen.queryAllByTestId("carta")).toHaveLength(0);
   });
 });
