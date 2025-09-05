@@ -7,6 +7,14 @@ vi.mock("../../actions/server-actions", () => ({
   fetchBooks: vi.fn(),
 }));
 
+<<<<<<< Updated upstream
+=======
+// Mock del componente Carta
+vi.mock("../componentes/portada", () => ({
+  default: ({ libro }: { libro: Libro} ) => <div data-testid="carta">{libro.titulo}</div>,
+})); //ahora si funciona
+
+>>>>>>> Stashed changes
 describe("SearchPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
