@@ -11,7 +11,7 @@ vi.mock("../../actions/server-actions", () => ({
 // Mock del componente Carta
 vi.mock("../componentes/portada", () => ({
   default: ({ libro }: { libro: Libro} ) => <div data-testid="carta">{libro.titulo}</div>,
-}));
+})); //ahora si funciona
 
 describe("SearchPage", () => {
   beforeEach(() => {

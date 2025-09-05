@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 este es un archivo que cree para hacer las pruebas respecto a las git actions 
+=======
+este es un archivo que cree para hacer las pruebas respecto a las git actions 
+asi que vamos a probar
+>>>>>>> prueba_git_actions
