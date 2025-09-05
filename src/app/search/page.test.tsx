@@ -2,6 +2,7 @@ import { describe, vi, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import SearchPage from "./page";
 import { fetchBooks } from "../../actions/server-actions";
+import { Libro } from "../tipos/libro";
 
 vi.mock("../../actions/server-actions", () => ({
   fetchBooks: vi.fn(),
@@ -9,7 +10,7 @@ vi.mock("../../actions/server-actions", () => ({
 
 // Mock del componente Carta
 vi.mock("../componentes/portada", () => ({
-  default: ({ libro }: any) => <div data-testid="carta">{libro.titulo}</div>,
+  default: ({ libro }: { libro: Libro} ) => <div data-testid="carta">{libro.titulo}</div>,
 }));
 
 describe("SearchPage", () => {
