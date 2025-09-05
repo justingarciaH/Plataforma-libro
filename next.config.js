@@ -5,12 +5,12 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'books.google.com',
-        pathname: '/**',
+        pathname: '/books/content*',
       },
       {
         protocol: 'https',
         hostname: 'books.google.com',
-        pathname: '/**',
+        pathname: '/books/content*',
       }
     ],
   },

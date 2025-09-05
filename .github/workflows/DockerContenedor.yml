@@ -1,12 +1,13 @@
-name: Contenedor de docker e imagen
+name: Contenedor de Docker e imagen
 on: 
-   push:
+  push:
     branches:
       - main
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -17,12 +18,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/plataforma-libro:latest
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/plataforma-libro:latest
+            ghcr.io/${{ github.repository_owner }}/plataforma-libro:${{ github.sha }}
           build-args: |
             NODE_ENV=production
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
