@@ -2,6 +2,7 @@
 
 # URL de la aplicación deployada funcionando correctamente
 
+Aplicacion deployada en: 
 https://plataforma-libro.vercel.app/
 
 
@@ -24,9 +25,14 @@ https://github.com/justingarciaH/Plataforma-libro
 
 # Variables de entorno necesarias
 
-.env
+API_DEPLOYADA_URL = https://plataforma-libro.vercel.app/
+
+API_GOOGLE_BOOKS =https://www.googleapis.com/books/v1/volumes/
+
+ 
 
 # Instrucciones para ejecutar con Docker
 
 
 # Demostración de que los GitHub Actions funcionan correctamente
+

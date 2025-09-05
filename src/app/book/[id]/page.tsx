@@ -12,7 +12,10 @@ type BookPageProps = {
 
 // Función para obtener libro de Google Books
 async function getBook(id: string): Promise<GoogleBooksItem | null> {
-  const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
+  const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`, {
+    next: { revalidate: 3600},
+  }
+  );
   if (!res.ok) return null;
   const data: GoogleBooksItem = await res.json();
   return data;
@@ -35,12 +38,10 @@ export default async function BookPage({ params }: BookPageProps) {
       <p className="text-lg">{info.authors?.join(", ")}</p>
 
       {/* Portada grande */}
-      {info.imageLinks?.thumbnail ? (
-        <Image
-          src={info.imageLinks.thumbnail}
+          {info.imageLinks?.large || info.imageLinks?.thumbnail ? (
+        <img
+          src={info.imageLinks?.thumbnail}
           alt={info.title}
-             width={120}   // 32 * 4 (Tailwind usa rem)
-          height={180}
           className="w-auto h-auto max-w-[120px] max-h-[180px]"
         />
       ) : (

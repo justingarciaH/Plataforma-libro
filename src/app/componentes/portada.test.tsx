@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Carta from './portada';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { Libro } from '../tipos/libro';
+
+vi.mock('next/image', () => ({
+  __esModule: true,
+  default: ({ src, alt }: { src: string; alt: string }) => {
+    // Devuelve un img normal para los tests
+    return <img src={src} alt={alt} />;
+  },
+}));
 
 // Caso con portada definida
 const libroConPortada: Libro = {
@@ -29,11 +37,13 @@ describe('Componente Carta', () => {
     expect(imagen).toHaveAttribute('alt', libroConPortada.titulo);
   });
 
+
+
   it('usa la portada por defecto cuando no hay imagen', () => {
     render(<Carta libro={libroSinPortada} />);
 
     const imagen = screen.getByRole('img');
-    expect(imagen).toHaveAttribute('src', '/images/default-book.jpg'); // 👈 por defecto
+    expect(imagen).toHaveAttribute('src', '/images/default-book.jpg');
     expect(imagen).toHaveAttribute('alt', libroSinPortada.titulo);
   });
 });
