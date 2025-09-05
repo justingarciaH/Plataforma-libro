@@ -36,8 +36,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ env.REPO_OWNER_LOWER }}/plataforma-libro:latest
-            ghcr.io/${{ env.REPO_OWNER_LOWER }}/plataforma-libro:${{ github.sha }}
+            ghcr.io/justingarciah/plataforma-libro:latest
+            ghcr.io/justingarciah/plataforma-libro:${{ github.sha }}
           build-args: |
             NODE_ENV=production
           cache-from: type=local,src=/tmp/.buildx-cache
