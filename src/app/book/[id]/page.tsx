@@ -1,46 +1,42 @@
+// src/app/book/[id]/page.tsx
 import { notFound } from "next/navigation";
 import ReseñaComponente from "../../componentes/reseña";
-import type { GoogleBooksItem } from "@/app/tipos/libro";
-import Image from "next/image";
+import { GoogleBooksItem } from "@/app/tipos/libro";
+import FavoriteButton from "@/app/componentes/favorito";
+import { obtenerResenasPorLibro } from "@/actions/resenas.actions";
 
-type BookPageProps = {
-  params: Promise <{
-    id: string;
-  }>;
-  // searchParams?: Record<string, string | string[]>;
-};
-
-// Función para obtener libro de Google Books
+// Función para obtener libro de Google Books (mantenida en el servidor)
 async function getBook(id: string): Promise<GoogleBooksItem | null> {
   const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`, {
-    next: { revalidate: 3600},
-  }
-  );
+    next: { revalidate: 3600 }, // Cacheo por 1 hora
+  });
+
   if (!res.ok) return null;
   const data: GoogleBooksItem = await res.json();
   return data;
 }
 
-// Componente Page
-export default async function BookPage({ params }: BookPageProps) {
+type BookPageProps = {
+  params: Promise<{ id: string }>; 
+};
 
-  const {
-    id
-  }= await params;
+export default async function BookPage({ params }: BookPageProps) {
+  const { id } = await params;
   const book = await getBook(id);
   if (!book) return notFound();
 
   const info = book.volumeInfo;
+  const resenas = await obtenerResenasPorLibro(id);
 
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold">{info.title}</h1>
       <p className="text-lg">{info.authors?.join(", ")}</p>
 
-      {/* Portada grande */}
-          {info.imageLinks?.large || info.imageLinks?.thumbnail ? (
+      {/* Portada */}
+      {info.imageLinks?.thumbnail ? (
         <img
-          src={info.imageLinks?.thumbnail}
+          src={info.imageLinks.thumbnail}
           alt={info.title}
           className="w-auto h-auto max-w-[120px] max-h-[180px]"
         />
@@ -69,10 +65,10 @@ export default async function BookPage({ params }: BookPageProps) {
         </li>
       </ul>
 
-      {/* Reseñas propias */}
-      <div className="mt-8">
-        <ReseñaComponente libroId={id} />
-      </div>
+    <FavoriteButton bookId={id} titulo={info.title} />
+
+      {/* Reseñas */}
+      <ReseñaComponente libroId={id} titulo={info.title} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Carta from './portada';
+import Carta from '../componentes/portada';
 import { describe, it, expect, vi } from 'vitest';
 import { Libro } from '../tipos/libro';
 

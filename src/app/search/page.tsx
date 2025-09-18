@@ -1,11 +1,13 @@
 import Carta from "../componentes/portada";
 import { fetchBooks } from "../../actions/server-actions";
 
-export default async function SearchPage(props: {
-  searchParams: Promise<Record<string, string | string[]>>;
+export default async function SearchPage( {
+    searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
 }) {
-  const searchParams = await props.searchParams;
-  const queryParam = searchParams?.q;
+  const params = await searchParams;
+  const queryParam = params?.q;
   const query = Array.isArray(queryParam) ? queryParam[0] : queryParam || "";
 
   const libros = query ? await fetchBooks(query) : [];

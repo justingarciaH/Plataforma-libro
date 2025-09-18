@@ -1,6 +1,7 @@
 import { fetchBooks } from "../actions/server-actions"; //accion que consulta los libros
 import Carta from "../app/componentes/portada";
 
+
 export const metadata = {
   title: "Biblioteca Justito",
   };
@@ -9,10 +10,12 @@ export const metadata = {
 export default async function Principal({
   searchParams,
 }: {
-  searchParams: Promise<Record<string, string | string[]>>;
+  searchParams: Promise<{ q?: string }>;
 }) {
-  const searchParam = await searchParams;
-  const queryParam = searchParam?.q;
+
+
+  const params = await searchParams;
+  const queryParam = params?.q;
   // const queryParam = await searchParams?.q;
   const query = Array.isArray(queryParam) ? queryParam[0] : queryParam || "";
 

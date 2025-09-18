@@ -1,3 +1,13 @@
+import { ObjectId } from "mongodb"
+
+export interface User { 
+  _id: string,
+  email: string,
+  name: string,
+  password: string,
+  createdAt: Date
+}
+ 
 export interface Libro {
   id: string
   titulo: string
@@ -10,15 +20,17 @@ export interface Libro {
 }
 
 
-
 export interface Reseña {
-  id: string
+  _id: string;
   idLibro: string
+  usuarioId: string
   usuario: string
   valoracion: number  // 1-5 en escala de estrellas ...
   comentario: string
   likes: number 
   dislikes: number
+  tituloLibro?: string // Título del libro al que pertenece la reseña
+  votos?: Record<string, "like" | "dislike">; // 👈 agregado
 }
 
 export interface GoogleBooksItem {

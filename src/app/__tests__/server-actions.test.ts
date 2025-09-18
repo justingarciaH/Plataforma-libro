@@ -1,9 +1,9 @@
 import { describe, it, expect,vi, beforeEach } from "vitest";
 import axios from "axios";
-import { fetchBooks} from "./server-actions";
+import { fetchBooks} from "../../actions/server-actions";
 
 vi.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = axios as vi.Mocked<typeof axios>;
 
 describe("fetchBooks", () => {
     beforeEach(() => {
@@ -27,8 +27,7 @@ describe("fetchBooks", () => {
 
 
     it('deberia manejar errores de la API correctamente', async () => {
-        (axios.get as jest.Mock).mockRejectedValue
-        (new Error("API Error"));
+        mockedAxios.get.mockRejectedValue(new Error("API Error"));
 
         const books = await fetchBooks("test");
         expect(books).toEqual([]); 
